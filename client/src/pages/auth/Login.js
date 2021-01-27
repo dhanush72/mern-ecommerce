@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { auth, googleAuth } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
+import { createUpdateUser } from "../../functions/auth";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -25,13 +26,22 @@ const Login = ({ history }) => {
       const result = auth.signInWithEmailAndPassword(email, password);
       const { user } = await result;
       const idTokenResult = await user.getIdTokenResult();
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
+      // * sending token to backend
+      createUpdateUser(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+        })
+        .catch((error) => console.log("create update user error:", error));
+
       history.push("/");
     } catch (error) {
       setLoading(false);
@@ -46,13 +56,22 @@ const Login = ({ history }) => {
       .then(async (result) => {
         const { user } = await result;
         const idTokenResult = await user.getIdTokenResult();
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
+        // * sending token to backend
+        createUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch((error) => console.log("create update user error:", error));
+
         history.push("/");
       })
       .catch((error) => {

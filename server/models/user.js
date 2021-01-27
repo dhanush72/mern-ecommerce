@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      // ? to find user by email
       index: true,
     },
     role: {
