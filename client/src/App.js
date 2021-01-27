@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/nav/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RegisterComplete from "./pages/auth/RegisterComplete";
@@ -12,8 +12,10 @@ import { useEffect } from "react";
 import { auth } from "./firebase";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import { currentUser } from "./functions/auth";
-import History from "./pages/User/History";
 import UserRoute from "./components/routes/UserRoute";
+import History from "./pages/User/History";
+import Password from "./pages/User/Password";
+import Wishlist from "./pages/User/Wishlist";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +55,8 @@ function App() {
         <Route path="/forgot-password" component={ForgotPassword} />
 
         <UserRoute path="/user/history" component={History} />
+        <UserRoute path="/user/password" component={Password} />
+        <UserRoute path="/user/wishlist" component={Wishlist} />
       </Switch>
     </Router>
   );

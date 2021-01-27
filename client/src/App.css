@@ -10,3 +10,12 @@ body {
   font-weight: 500;
   color: #303952;
 }
+
+.center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
