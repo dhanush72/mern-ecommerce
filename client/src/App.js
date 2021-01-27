@@ -13,9 +13,11 @@ import { auth } from "./firebase";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import { currentUser } from "./functions/auth";
 import UserRoute from "./components/routes/UserRoute";
-import History from "./pages/User/History";
-import Password from "./pages/User/Password";
-import Wishlist from "./pages/User/Wishlist";
+import AdminRoute from "./components/routes/AdminRoute";
+import History from "./pages/user/History";
+import Password from "./pages/user/Password";
+import Wishlist from "./pages/user/Wishlist";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +59,8 @@ function App() {
         <UserRoute path="/user/history" component={History} />
         <UserRoute path="/user/password" component={Password} />
         <UserRoute path="/user/wishlist" component={Wishlist} />
+
+        <AdminRoute path="/admin/dashboard" component={AdminDashboard} />
       </Switch>
     </Router>
   );
