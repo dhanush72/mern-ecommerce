@@ -4,14 +4,15 @@ const slufigy = require("slugify");
 // * create subcategory
 exports.create = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, parent } = req.body;
     const category = await new SubCategory({
       name,
+      parent,
       slug: slufigy(name),
     }).save();
     res.json(category);
   } catch (error) {
-    console.log(error);
+    console.log("sub category", error);
     res.status(400).send("subcategory create failed");
   }
 };

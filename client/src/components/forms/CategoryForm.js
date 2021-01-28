@@ -1,14 +1,14 @@
 import React from "react";
 import { Input, Button } from "antd";
 
-const CategoryForm = ({ name, setName, handleSubmit }) => {
+const CategoryForm = ({ place, name, setName, handleSubmit }) => {
   return (
     <form>
       <div className="form-group">
         <Input
           type="text"
           size="large"
-          placeholder="Enter category name"
+          placeholder={`Enter ${place} name`}
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus

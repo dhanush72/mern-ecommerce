@@ -75,6 +75,7 @@ const CategoryCreate = () => {
           {loading ? <h4>Loading...</h4> : <h4>Create Category</h4>}
 
           <CategoryForm
+            place={"category"}
             name={name}
             setName={setName}
             handleSubmit={handleSubmit}
