@@ -3,21 +3,18 @@ import AdminNav from "../../../components/nav/AdminNav";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {
-  createCategory,
-  getCategories,
-  removeCategory,
-} from "../../../functions/category";
+import { getCategories } from "../../../functions/category";
 import {
   createSubCategory,
   getSubCategories,
   removeSubCategory,
 } from "../../../functions/subcategory.js";
-import { Card, Skeleton, Row, Col } from "antd";
+import { Card, Skeleton, Row, Col, Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Meta } from "antd/lib/list/Item";
 import CategoryForm from "../../../components/forms/CategoryForm";
 import CategorySearch from "../../../components/forms/CategorySearch";
+import { Option } from "antd/lib/mentions";
 
 const SubCategoryCreate = () => {
   const [name, setName] = useState("");
@@ -35,7 +32,7 @@ const SubCategoryCreate = () => {
 
   // * get all categories
   const loadCategories = () => {
-    getCategories().then((category) => setCategories(category.data));
+    getCategories().then((c) => setCategories(c.data));
   };
 
   const loadSubCategories = () => {
@@ -87,34 +84,17 @@ const SubCategoryCreate = () => {
           {loading ? <h4>Loading...</h4> : <h4>Create sub category</h4>}
 
           <div className="form-group">
-            <label htmlFor="">Parent Category</label>
-            <select
-              name="category"
-              className="form-control"
-              onChange={(e) => setCategory(e.target.value)}
+            <Select
+              defaultValue="please select"
+              onChange={(value) => setCategory(value)}
             >
-              <option value="please select">please select</option>
               {categories.length > 0 &&
                 categories.map((c) => (
-                  <option key={c._id} value={c._id}>
+                  <Select.Option key={c._id} value={c._id}>
                     {c.name}
-                  </option>
+                  </Select.Option>
                 ))}
-            </select>
-            {/* <Input.Group compact>
-              <Select
-                name="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                {categories.length > 0 &&
-                  categories.map((c) => (
-                    <Option key={c._id} value={c._id}>
-                      {c.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Input.Group> */}
+            </Select>
           </div>
 
           <CategoryForm
@@ -133,7 +113,7 @@ const SubCategoryCreate = () => {
               <Col className="gutter-row mb-5" xs={12} sm={8} key={s._id}>
                 <Card
                   actions={[
-                    <Link to={`/admin/category/${s.slug}`}>
+                    <Link to={`/admin/subcategory/${s.slug}`}>
                       <EditOutlined /> Edit
                     </Link>,
                     <span
