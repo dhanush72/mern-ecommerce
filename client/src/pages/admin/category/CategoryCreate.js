@@ -8,14 +8,17 @@ import {
   getCategories,
   removeCategory,
 } from "../../../functions/category";
-import { Input, Button, Card, Skeleton, Row, Col } from "antd";
+import { Card, Skeleton, Row, Col } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Meta } from "antd/lib/list/Item";
+import CategoryForm from "../../../components/forms/CategoryForm";
+import CategorySearch from "../../../components/forms/CategorySearch";
 
 const CategoryCreate = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [query, setQuery] = useState("");
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
@@ -46,6 +49,7 @@ const CategoryCreate = () => {
   const handleDelete = async (slug) => {
     if (window.confirm("Delete ?")) {
       setLoading(true);
+      // ! delete category function
       removeCategory(slug, user.token)
         .then((res) => {
           setLoading(false);
@@ -59,6 +63,8 @@ const CategoryCreate = () => {
     }
   };
 
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -68,28 +74,18 @@ const CategoryCreate = () => {
         <div className="col-md-8">
           {loading ? <h4>Loading...</h4> : <h4>Create Category</h4>}
 
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <Input
-                type="text"
-                size="large"
-                placeholder="Enter category name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="form-group">
-              <Button type="primary" size="large" onClick={handleSubmit}>
-                Add
-              </Button>
-            </div>
-          </form>
+          <CategoryForm
+            name={name}
+            setName={setName}
+            handleSubmit={handleSubmit}
+          />
 
           <h4>All Category</h4>
+
+          <CategorySearch query={query} setQuery={setQuery} />
+
           <Row gutter={16}>
-            {categories.map((c) => (
+            {categories.filter(searched(query)).map((c) => (
               <Col className="gutter-row mb-5" xs={12} sm={8} key={c._id}>
                 <Card
                   actions={[

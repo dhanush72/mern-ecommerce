@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getCategory, updateCategory } from "../../../functions/category";
 import { Input, Button } from "antd";
+import CategoryForm from "../../../components/forms/CategoryForm";
 
 const CategoryUpdate = ({ history, match }) => {
   const [name, setName] = useState("");
@@ -44,24 +45,11 @@ const CategoryUpdate = ({ history, match }) => {
         <div className="col-md-4">
           {loading ? <h4>Loading...</h4> : <h4>Update Category</h4>}
 
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <Input
-                type="text"
-                size="large"
-                placeholder="Enter category name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="form-group">
-              <Button type="primary" size="large" onClick={handleSubmit}>
-                Update
-              </Button>
-            </div>
-          </form>
+          <CategoryForm
+            name={name}
+            setName={setName}
+            handleSubmit={handleSubmit}
+          />
         </div>
       </div>
     </div>
