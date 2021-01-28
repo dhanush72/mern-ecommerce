@@ -3,7 +3,7 @@ import UserNav from "../../components/nav/UserNav";
 
 const History = () => {
   return (
-    <div>
+    <>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-2">
@@ -12,7 +12,7 @@ const History = () => {
           <div className="col">History Content</div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
