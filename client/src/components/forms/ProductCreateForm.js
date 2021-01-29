@@ -1,11 +1,17 @@
 import React from "react";
 import { Input, Select } from "antd";
+import { toast } from "react-toastify";
+
+const { Option } = Select;
 
 const ProductCreateForm = ({
   values,
   setValues,
   handleChange,
   handleSubmit,
+  subOptions,
+  showSubCategory,
+  handleCategoryChange,
 }) => {
   const {
     title,
@@ -22,6 +28,7 @@ const ProductCreateForm = ({
     color,
     brand,
   } = values;
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -32,7 +39,6 @@ const ProductCreateForm = ({
           placeholder="Enter product title"
           value={title}
           onChange={handleChange}
-          required
         />
       </div>
       <div className="form-group">
@@ -57,7 +63,6 @@ const ProductCreateForm = ({
           required
         />
       </div>
-
       <div className="form-group">
         <Input
           type="number"
@@ -69,7 +74,7 @@ const ProductCreateForm = ({
           required
         />
       </div>
-      <div className="form-group inline-block">
+      <div className="form-group">
         <label htmlFor="">Shipping</label>
         <select
           name="shipping"
@@ -93,7 +98,6 @@ const ProductCreateForm = ({
           ))}
         </select>
       </div>
-
       <div className="form-group">
         <label htmlFor="brand">Brands</label>
         <select name="brand" className="form-control" onChange={handleChange}>
@@ -105,13 +109,12 @@ const ProductCreateForm = ({
           ))}
         </select>
       </div>
-
       <div className="form-group">
         <label htmlFor="category">Category</label>
         <select
           name="category"
           className="form-control"
-          onChange={handleChange}
+          onChange={handleCategoryChange}
         >
           <option value="">please select</option>
           {categories.length > 0 &&
@@ -122,6 +125,26 @@ const ProductCreateForm = ({
             ))}
         </select>
       </div>
+
+      {showSubCategory && (
+        <div className="form-group">
+          <label htmlFor="">Sub Categories</label>
+          <Select
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            value={subcategory}
+            onChange={(value) => setValues({ ...values, subcategory: value })}
+          >
+            {subOptions.length &&
+              subOptions.map((s) => (
+                <Option key={s._id} value={s._id}>
+                  {s.name}
+                </Option>
+              ))}
+          </Select>
+        </div>
+      )}
 
       <div className="form-group">
         <button className="btn ant-btn-primary" type="submit">

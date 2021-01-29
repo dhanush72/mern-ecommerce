@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
-import { getCategories } from "../../../functions/category";
+import { getCategories, getCategorySubs } from "../../../functions/category";
 
 const initState = {
   title: "",
@@ -24,9 +24,9 @@ const initState = {
 
 const ProductCreate = () => {
   const [values, setValues] = useState(initState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [showSubCategory, setShowSubCategory] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
-
-  console.log(values.categories);
 
   useEffect(() => {
     loadCategories();
@@ -62,6 +62,21 @@ const ProductCreate = () => {
       });
   };
 
+  const handleCategoryChange = (e) => {
+    e.preventDefault();
+    console.log("clicked category", e.target.value);
+    setValues({ ...values, subcategory: [], category: e.target.value });
+    getCategorySubs(e.target.value)
+      .then((res) => {
+        setSubOptions(res.data);
+        console.log("sub options", res);
+      })
+      .catch((error) => {
+        console.log("sub options", error);
+      });
+    setShowSubCategory(true);
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -70,11 +85,15 @@ const ProductCreate = () => {
         </div>
         <div className="col-md-3">
           <h4>Create Product</h4>
+
           <ProductCreateForm
             values={values}
             setValues={setValues}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            handleCategoryChange={handleCategoryChange}
+            subOptions={subOptions}
+            showSubCategory={showSubCategory}
           />
         </div>
       </div>
