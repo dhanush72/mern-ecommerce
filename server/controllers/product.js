@@ -16,3 +16,12 @@ exports.create = async (req, res) => {
     });
   }
 };
+
+exports.read = async (req, res) => {
+  try {
+    const products = await Product.find({}).exec();
+    res.json(products);
+  } catch (error) {
+    res.status(400).send(" category not found");
+  }
+};
