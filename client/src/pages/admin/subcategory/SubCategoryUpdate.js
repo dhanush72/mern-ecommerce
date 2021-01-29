@@ -62,7 +62,7 @@ const SubCategoryUpdate = ({ history, match }) => {
           {loading ? <h4>Loading...</h4> : <h4>Update sub category</h4>}
 
           <div className="form-group">
-            {/* <select
+            <select
               name="category"
               className="form-control"
               onChange={(e) => setParent(e.target.value)}
@@ -74,18 +74,7 @@ const SubCategoryUpdate = ({ history, match }) => {
                     {c.name}
                   </option>
                 ))}
-            </select> */}
-            <Select
-              defaultValue="please enter"
-              onChange={(value) => setParent(value)}
-            >
-              {categories.length > 0 &&
-                categories.map((c) => (
-                  <Select.Option key={c._id} value={c._id === parent}>
-                    {c.name}
-                  </Select.Option>
-                ))}
-            </Select>
+            </select>
           </div>
 
           <CategoryForm
