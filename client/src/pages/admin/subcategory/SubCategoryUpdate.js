@@ -8,10 +8,7 @@ import {
   updateSubCategory,
 } from "../../../functions/subcategory.js";
 import CategoryForm from "../../../components/forms/CategoryForm";
-
 import { Select } from "antd";
-
-const { Option } = Select;
 
 const SubCategoryUpdate = ({ history, match }) => {
   const [name, setName] = useState("");
@@ -31,6 +28,7 @@ const SubCategoryUpdate = ({ history, match }) => {
     getCategories().then((category) => setCategories(category.data));
   };
 
+  // * get all sub categories
   const loadSubCategory = () => {
     getSubCategory(match.params.slug).then((sub) => {
       setName(sub.data.name);
@@ -83,7 +81,7 @@ const SubCategoryUpdate = ({ history, match }) => {
             >
               {categories.length > 0 &&
                 categories.map((c) => (
-                  <Select.Option key={c._id} value={c._id}>
+                  <Select.Option key={c._id} value={c._id === parent}>
                     {c.name}
                   </Select.Option>
                 ))}

@@ -14,7 +14,6 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Meta } from "antd/lib/list/Item";
 import CategoryForm from "../../../components/forms/CategoryForm";
 import CategorySearch from "../../../components/forms/CategorySearch";
-import { Option } from "antd/lib/mentions";
 
 const SubCategoryCreate = () => {
   const [name, setName] = useState("");
