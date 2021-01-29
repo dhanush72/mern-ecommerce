@@ -13,7 +13,7 @@ const AdminRoute = ({ ...rest }) => {
       currentAdmin(user.token)
         .then((res) => {
           setOk(true);
-          console.log("Admin Route res", res);
+          // console.log("Admin Route res", res);
         })
         .catch((error) => {
           setOk(false);
