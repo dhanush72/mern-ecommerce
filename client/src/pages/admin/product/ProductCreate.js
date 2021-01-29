@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
+import FileUpload from "../../../components/forms/FileUpload";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const initState = {
   title: "",
@@ -26,6 +28,8 @@ const ProductCreate = () => {
   const [values, setValues] = useState(initState);
   const [subOptions, setSubOptions] = useState([]);
   const [showSubCategory, setShowSubCategory] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
@@ -84,7 +88,21 @@ const ProductCreate = () => {
           <AdminNav />
         </div>
         <div className="col-md-3">
-          <h4>Create Product</h4>
+          {loading ? (
+            <LoadingOutlined className="text-danger h1" />
+          ) : (
+            <h4>Create Product</h4>
+          )}
+          <hr />
+
+          <div className="form-group">
+            <FileUpload
+              values={values}
+              setValues={setValues}
+              loading={loading}
+              setLoading={setLoading}
+            />
+          </div>
 
           <ProductCreateForm
             values={values}
