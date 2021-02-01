@@ -17,11 +17,16 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.read = async (req, res) => {
+exports.relistAll = async (req, res) => {
   try {
-    const products = await Product.find({}).exec();
+    const products = await Product.find({})
+      .limit(parseInt(req.params.count))
+      .populate("category")
+      .populate("subcategory")
+      .sort([["createdAt", "desc"]])
+      .exec();
     res.json(products);
   } catch (error) {
-    res.status(400).send(" category not found");
+    res.status(400).send(" product not found");
   }
 };

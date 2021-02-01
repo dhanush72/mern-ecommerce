@@ -8,7 +8,10 @@ const AdminDashboard = () => {
         <div className="col-md-2">
           <AdminNav />
         </div>
-        <div className="col">Dashboard</div>
+
+        <div className="col-md-8">
+          <h4>Admin Dashboard</h4>
+        </div>
       </div>
     </div>
   );

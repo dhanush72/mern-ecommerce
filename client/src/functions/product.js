@@ -8,6 +8,6 @@ export const createProduct = async (product, authtoken) => {
   });
 };
 
-export const getProducts = async () => {
-  return await axios.post(`${process.env.REACT_APP_API}/products`);
+export const getProducts = async (count) => {
+  return await axios.get(`${process.env.REACT_APP_API}/products/${count}`);
 };
