@@ -1,5 +1,5 @@
-import React from "react";
-import { Card } from "antd";
+import React, { useState } from "react";
+import { Card, Tooltip } from "antd";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
@@ -10,9 +10,11 @@ const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
   const { title, images, slug, price } = product;
+  const [toolTip, setToolTip] = useState("Click to add");
 
   const handleAddToCart = () => {
     let cart = [];
+
     //? check for window object
     if (typeof window !== undefined) {
       // * get cart from local storage
@@ -30,6 +32,7 @@ const ProductCard = ({ product }) => {
 
       // * save to local storage
       localStorage.setItem("cart", JSON.stringify(unique));
+      setToolTip("Added");
     }
   };
 
@@ -46,9 +49,11 @@ const ProductCard = ({ product }) => {
         <Link to={`/product/${slug}`}>
           <EyeOutlined className="text-info" /> <br /> View
         </Link>,
-        <a onClick={handleAddToCart}>
-          <ShoppingCartOutlined className="text-success" /> <br /> Add to cart
-        </a>,
+        <Tooltip title={toolTip} color="green">
+          <a onClick={handleAddToCart}>
+            <ShoppingCartOutlined className="text-success" /> <br /> Add to cart
+          </a>
+        </Tooltip>,
       ]}
     >
       {product && product.ratings && product.ratings.length > 0 ? (
