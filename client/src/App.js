@@ -24,6 +24,11 @@ import SubCategoryCreate from "./pages/admin/subcategory/SubCategoryCreate";
 import SubCategoryUpdate from "./pages/admin/subcategory/SubCategoryUpdate";
 import ProductCreate from "./pages/admin/product/ProductCreate";
 import Products from "./pages/admin/product/Products";
+import ProductUpdate from "./pages/admin/product/ProductUpdate";
+import Product from "./pages/Product";
+import CategoryHome from "./pages/category/CategoryHome";
+import SubCategoryHome from "./pages/subcategory/SubCategoryHome";
+import Shop from "./pages/Shop";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +67,12 @@ function App() {
         <Route path="/register-complete" component={RegisterComplete} />
         <Route path="/forgot-password" component={ForgotPassword} />
 
+        <Route exact path="/product/:slug" component={Product} />
+        <Route exact path="/category/:slug" component={CategoryHome} />
+        <Route exact path="/subcategory/:slug" component={SubCategoryHome} />
+
+        <Route exact path="/shop" component={Shop} />
+
         <UserRoute path="/user/history" component={History} />
         <UserRoute path="/user/password" component={Password} />
         <UserRoute path="/user/wishlist" component={Wishlist} />
@@ -87,6 +98,11 @@ function App() {
 
         <AdminRoute exact path="/admin/product" component={ProductCreate} />
         <AdminRoute exact path="/admin/products" component={Products} />
+        <AdminRoute
+          exact
+          path="/admin/product/:slug"
+          component={ProductUpdate}
+        />
       </Switch>
     </Router>
   );

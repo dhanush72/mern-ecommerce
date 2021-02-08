@@ -8,7 +8,6 @@ import {
   updateSubCategory,
 } from "../../../functions/subcategory.js";
 import CategoryForm from "../../../components/forms/CategoryForm";
-import { Select } from "antd";
 
 const SubCategoryUpdate = ({ history, match }) => {
   const [name, setName] = useState("");

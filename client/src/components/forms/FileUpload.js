@@ -3,7 +3,6 @@ import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Avatar, Badge } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 const FileUpload = ({ values, setValues, loading, setLoading }) => {
   const { user } = useSelector((state) => ({ ...state }));

@@ -1,22 +1,25 @@
 import React from "react";
 import { Input, Select, Row, Col } from "antd";
+import { Link } from "react-router-dom";
 
 const { Option } = Select;
 
-const ProductCreateForm = ({
+const ProductUpdateForm = ({
   values,
   setValues,
   handleChange,
   handleSubmit,
-  subOptions,
-  showSubCategory,
   handleCategoryChange,
+  categories,
+  subOptions,
+  arrayOfSubs,
+  setArrayOfSubs,
+  selectedCategory,
 }) => {
   const {
     title,
     description,
     price,
-    categories,
     category,
     subcategory,
     shipping,
@@ -55,9 +58,11 @@ const ProductCreateForm = ({
               placeholder="Enter product description"
               value={description}
               onChange={handleChange}
+              required
             />
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="">Price</label>
@@ -68,9 +73,11 @@ const ProductCreateForm = ({
               placeholder="Enter product price"
               value={price}
               onChange={handleChange}
+              required
             />
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="">Quantity</label>
@@ -81,9 +88,11 @@ const ProductCreateForm = ({
               placeholder="Enter product quantity"
               value={quantity}
               onChange={handleChange}
+              required
             />
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="">Shipping</label>
@@ -91,20 +100,21 @@ const ProductCreateForm = ({
               name="shipping"
               className="form-control"
               onChange={handleChange}
+              value={shipping === "Yes" ? "Yes" : "No"}
             >
-              <option value="">please select</option>
-
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="color">Colors</label>
             <select
               name="color"
               className="form-control"
+              value={color}
               onChange={handleChange}
             >
               <option value="">please select</option>
@@ -116,12 +126,14 @@ const ProductCreateForm = ({
             </select>
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="brand">Brands</label>
             <select
               name="brand"
               className="form-control"
+              value={brand}
               onChange={handleChange}
             >
               <option value="">please select</option>
@@ -133,15 +145,16 @@ const ProductCreateForm = ({
             </select>
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
           <div className="form-group">
             <label htmlFor="category">Category</label>
             <select
               name="category"
               className="form-control"
+              value={selectedCategory ? selectedCategory : category._id}
               onChange={handleCategoryChange}
             >
-              <option value="">please select</option>
               {categories.length > 0 &&
                 categories.map((c) => (
                   <option key={c._id} value={c._id}>
@@ -151,18 +164,17 @@ const ProductCreateForm = ({
             </select>
           </div>
         </Col>
+
         <Col className="gutter-row mb-5" xs={24} sm={12} md={8}>
-          {showSubCategory && (
+          <div className="form-group">
             <div className="form-group">
-              <label htmlFor="">Sub Categories</label>
+              <label htmlFor="">Sub Category</label>
               <Select
                 mode="multiple"
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                value={subcategory}
-                onChange={(value) =>
-                  setValues({ ...values, subcategory: value })
-                }
+                value={arrayOfSubs}
+                onChange={(value) => setArrayOfSubs(value)}
               >
                 {subOptions.length &&
                   subOptions.map((s) => (
@@ -172,17 +184,25 @@ const ProductCreateForm = ({
                   ))}
               </Select>
             </div>
-          )}
+          </div>
         </Col>
 
-        <div className="form-group">
+        <div className="form-group mr-3">
           <button className="btn ant-btn-primary" type="submit">
-            Create
+            Update
           </button>
+        </div>
+
+        <div className="form-group">
+          <Link to="/admin/products">
+            <button className="btn ant-btn-danger" type="submit">
+              Cancel
+            </button>
+          </Link>
         </div>
       </Row>
     </form>
   );
 };
 
-export default ProductCreateForm;
+export default ProductUpdateForm;

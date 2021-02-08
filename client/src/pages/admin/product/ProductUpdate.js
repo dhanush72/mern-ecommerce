@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createProduct } from "../../../functions/product";
-import ProductCreateForm from "../../../components/forms/ProductCreateForm";
+import { getProduct, updateProduct } from "../../../functions/product";
 import { getCategories, getCategorySubs } from "../../../functions/category";
-import FileUpload from "../../../components/forms/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
+import ProductUpdateForm from "../../../components/forms/ProductUpdateForm";
+import FileUpload from "../../../components/forms/FileUpload";
 
 const initState = {
   title: "",
   description: "",
   price: "",
-  categories: [],
   category: "",
   subcategory: [],
   shipping: "",
@@ -24,25 +23,41 @@ const initState = {
   brand: "",
 };
 
-const ProductCreate = ({ history }) => {
+const ProductUpdate = ({ history, match }) => {
   const [values, setValues] = useState(initState);
-  const [subOptions, setSubOptions] = useState([]);
   const [showSubCategory, setShowSubCategory] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [subOptions, setSubOptions] = useState([]);
+  const [arrayOfSubs, setArrayOfSubs] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const { user } = useSelector((state) => ({ ...state }));
-
-  const { title, description } = values;
+  const { slug } = match.params;
 
   useEffect(() => {
+    loadProduct();
     loadCategories();
   }, []);
 
-  // * get all categories
+  const loadProduct = () => {
+    getProduct(slug)
+      .then((res) => {
+        // * load single product
+        setValues({ ...values, ...res.data });
+        // * load single product sub category
+        getCategorySubs(res.data.category._id).then((res) => {
+          setSubOptions(res.data);
+        });
+        // * array of sub category id as default values
+        const arr = [];
+        res.data.subcategory.map((s) => arr.push(s._id));
+        setArrayOfSubs((pre) => arr);
+      })
+      .catch((error) => console.log("single product:", error));
+  };
+
   const loadCategories = () => {
-    getCategories().then((category) =>
-      setValues({ ...values, categories: category.data })
-    );
+    getCategories().then((category) => setCategories(category.data));
   };
 
   const handleChange = (e) => {
@@ -55,36 +70,45 @@ const ProductCreate = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!title || !description) {
-      return toast.error("field cannot be empty");
-    }
-    createProduct(values, user.token)
+    setLoading(true);
+    values.subcategory = arrayOfSubs;
+    values.category = selectedCategory ? selectedCategory : values.category;
+    updateProduct(slug, values, user.token)
       .then((res) => {
         console.log(res);
-        toast.success(`${res.data.title} is created`);
-        // setValues(initState);
+        setLoading(false);
+        toast.success(`${res.data.title} is updated`);
         history.push("/admin/products");
       })
       .catch((error) => {
-        console.log("create product:", error.message);
-        // if (error.response.status === 400) toast.error(error.response.data);
+        console.log("update product:", error.message);
+        setLoading(false);
         toast.error(error.response.data.error);
       });
   };
 
   const handleCategoryChange = (e) => {
     e.preventDefault();
-    setValues({ ...values, subcategory: [], category: e.target.value });
+    setValues({ ...values, subcategory: [] });
+
+    // ? restore selected
+    setSelectedCategory(e.target.value);
+
     getCategorySubs(e.target.value)
       .then((res) => {
         setSubOptions(res.data);
-        console.log("sub options", res);
       })
       .catch((error) => {
         console.log("sub options", error);
       });
     setShowSubCategory(true);
+
+    // ? go back to original category
+    if (values.category._id === e.target.value) {
+      loadProduct();
+    }
+    // ? clear category
+    setArrayOfSubs([]);
   };
 
   return (
@@ -97,11 +121,12 @@ const ProductCreate = ({ history }) => {
           {loading ? (
             <LoadingOutlined className="text-danger h1" />
           ) : (
-            <h4>Create Product</h4>
+            <h4>Update Product</h4>
           )}
           <hr />
 
           <div className="form-group">
+            <label htmlFor=""> Image</label>
             <FileUpload
               values={values}
               setValues={setValues}
@@ -110,14 +135,17 @@ const ProductCreate = ({ history }) => {
             />
           </div>
 
-          <ProductCreateForm
+          <ProductUpdateForm
             values={values}
             setValues={setValues}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleCategoryChange={handleCategoryChange}
+            categories={categories}
             subOptions={subOptions}
-            showSubCategory={showSubCategory}
+            arrayOfSubs={arrayOfSubs}
+            setArrayOfSubs={setArrayOfSubs}
+            selectedCategory={selectedCategory}
           />
         </div>
       </div>
@@ -125,4 +153,4 @@ const ProductCreate = ({ history }) => {
   );
 };
 
-export default ProductCreate;
+export default ProductUpdate;

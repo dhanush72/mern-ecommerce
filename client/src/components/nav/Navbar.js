@@ -7,9 +7,11 @@ import {
   LoginOutlined,
   UserOutlined,
   LogoutOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
+import SearchForm from "../forms/SearchForm";
 
 const { SubMenu, Item } = Menu;
 
@@ -35,6 +37,10 @@ const Navbar = () => {
     <Menu onClick={handleClick} mode="horizontal" selectedKeys={[current]}>
       <Item key="home" icon={<HomeOutlined />}>
         <Link to="/">Home</Link>
+      </Item>
+
+      <Item key="shop" icon={<ShoppingOutlined />}>
+        <Link to="/shop">Shop</Link>
       </Item>
 
       {user ? (
@@ -69,6 +75,10 @@ const Navbar = () => {
           </Item>
         </>
       )}
+
+      <span className="float-right">
+        <SearchForm />
+      </span>
     </Menu>
   );
 };

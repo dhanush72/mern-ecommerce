@@ -15,15 +15,26 @@ const Login = ({ history }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    // ? sometimes null = true
-    if (user && user.token) history.push("/");
+    const intended = history.location.state;
+    if (intended) {
+      return;
+    } else {
+      // ? sometimes null = true
+      if (user && user.token) history.push("/");
+    }
   }, [user, history]);
 
   const roleBasedRedirect = (res) => {
-    if (res.data.role === "admin") {
-      history.push("/admin/dashboard");
+    // ? take user to intended page
+    const intended = history.location.state;
+    if (intended) {
+      history.push(intended.from);
     } else {
-      history.push("/user/history");
+      if (res.data.role === "admin") {
+        history.push("/admin/dashboard");
+      } else {
+        history.push("/user/history");
+      }
     }
   };
 
@@ -138,7 +149,6 @@ const Login = ({ history }) => {
                 Login with Email
               </Button>
             </div>
-
             <div className="form-group">
               <Button
                 type="danger"

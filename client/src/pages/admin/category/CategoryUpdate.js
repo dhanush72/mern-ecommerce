@@ -9,6 +9,7 @@ const CategoryUpdate = ({ history, match }) => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
+  const { slug } = match.params;
 
   useEffect(() => {
     loadCategory();
@@ -16,7 +17,7 @@ const CategoryUpdate = ({ history, match }) => {
 
   // * get category
   const loadCategory = () => {
-    getCategory(match.params.slug).then((c) => setName(c.data.name));
+    getCategory(slug).then((c) => setName(c.data.name));
   };
 
   const handleSubmit = (e) => {
