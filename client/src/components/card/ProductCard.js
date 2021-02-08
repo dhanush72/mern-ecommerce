@@ -5,12 +5,15 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
+import { useSelector, useDispatch } from "react-redux";
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
   const { title, images, slug, price } = product;
   const [toolTip, setToolTip] = useState("Click to add");
+
+  const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     let cart = [];
@@ -33,6 +36,9 @@ const ProductCard = ({ product }) => {
       // * save to local storage
       localStorage.setItem("cart", JSON.stringify(unique));
       setToolTip("Added");
+
+      // * add to redux
+      dispatch({ type: "ADD_TO_CART", payload: unique });
     }
   };
 

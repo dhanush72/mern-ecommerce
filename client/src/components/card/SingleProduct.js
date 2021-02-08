@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, Tag } from "antd";
+import React, { useState } from "react";
+import { Card, Tag, Tooltip } from "antd";
 import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
@@ -8,11 +8,43 @@ import ProductListItems from "./ProductListItems";
 import StarRatings from "react-star-ratings";
 import RatingModal from "../modal/RatingModal";
 import { showAverage } from "../../functions/rating";
+import { useDispatch } from "react-redux";
+import _ from "lodash";
 
 const { Meta } = Card;
 
 const SingleProduct = ({ product, star, onStarClick }) => {
   const { _id, title, description, images, slug, category } = product;
+  const [toolTip, setToolTip] = useState("Click to add");
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    let cart = [];
+
+    //? check for window object
+    if (typeof window !== undefined) {
+      // * get cart from local storage
+      if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem("cart"));
+      }
+      // * push new to cart
+      cart.push({
+        ...product,
+        count: 1,
+      });
+
+      // * remove duplicates
+      let unique = _.uniqWith(cart, _.isEqual);
+
+      // * save to local storage
+      localStorage.setItem("cart", JSON.stringify(unique));
+      setToolTip("Added");
+
+      // * add to redux
+      dispatch({ type: "ADD_TO_CART", payload: unique });
+    }
+  };
 
   return (
     <>
@@ -39,9 +71,12 @@ const SingleProduct = ({ product, star, onStarClick }) => {
       <div className="col-md-6">
         <Card
           actions={[
-            <>
-              <ShoppingCartOutlined className="text-success" /> Add to Cart
-            </>,
+            <Tooltip title={toolTip} color="green">
+              <a onClick={handleAddToCart}>
+                <ShoppingCartOutlined className="text-success" /> <br /> Add to
+                cart
+              </a>
+            </Tooltip>,
             <Link to={`/product/${slug}`}>
               <HeartOutlined className="text-secondary" /> <br /> Add to
               Wishlist
