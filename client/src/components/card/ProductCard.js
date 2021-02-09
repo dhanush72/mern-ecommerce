@@ -5,7 +5,7 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const { Meta } = Card;
 
@@ -39,6 +39,9 @@ const ProductCard = ({ product }) => {
 
       // * add to redux
       dispatch({ type: "ADD_TO_CART", payload: unique });
+
+      // * show cart items in side drawer
+      dispatch({ type: "SET_VISIBLE", payload: true });
     }
   };
 

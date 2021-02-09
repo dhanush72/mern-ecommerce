@@ -29,6 +29,8 @@ import Product from "./pages/Product";
 import CategoryHome from "./pages/category/CategoryHome";
 import SubCategoryHome from "./pages/subcategory/SubCategoryHome";
 import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
+import SideDrawer from "./components/drawer/SideDrawer";
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +61,7 @@ function App() {
   return (
     <Router>
       <Navbar />
+      <SideDrawer />
       <ToastContainer />
       <Switch>
         <Route exact path="/" component={Home} />
@@ -72,6 +75,7 @@ function App() {
         <Route exact path="/subcategory/:slug" component={SubCategoryHome} />
 
         <Route exact path="/shop" component={Shop} />
+        <Route exact path="/cart" component={Cart} />
 
         <UserRoute path="/user/history" component={History} />
         <UserRoute path="/user/password" component={Password} />

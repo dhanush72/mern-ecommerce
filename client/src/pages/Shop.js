@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  getProduct,
-  getProductsByCount,
-  getProductsByFilter,
-} from "../functions/product";
+import { getProductsByCount, getProductsByFilter } from "../functions/product";
 import { getCategories } from "../functions/category";
 import { getSubCategories } from "../functions/subcategory";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +17,7 @@ import {
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import Star from "../components/forms/Star";
 
-const { SubMenu, ItemGroup } = Menu;
+const { SubMenu } = Menu;
 
 const Shop = () => {
   const [loading, setLoading] = useState(false);
