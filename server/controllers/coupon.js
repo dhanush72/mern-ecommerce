@@ -2,7 +2,7 @@ const Coupon = require("../models/coupon");
 
 exports.create = async (req, res) => {
   try {
-    const { name, expiry, discount } = req.body;
+    const { name, expiry, discount } = req.body.coupon;
     const coupon = await new Coupon({
       name,
       expiry,
@@ -10,7 +10,7 @@ exports.create = async (req, res) => {
     }).save();
     res.json(coupon);
   } catch (error) {
-    res.status(401).json(error);
+    res.status(401).json({ error: error.message });
   }
 };
 
