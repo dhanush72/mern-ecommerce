@@ -31,6 +31,7 @@ import SubCategoryHome from "./pages/subcategory/SubCategoryHome";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import SideDrawer from "./components/drawer/SideDrawer";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ function App() {
 
         <Route exact path="/shop" component={Shop} />
         <Route exact path="/cart" component={Cart} />
+        <Route exact path="/checkout" component={Checkout} />
 
         <UserRoute path="/user/history" component={History} />
         <UserRoute path="/user/password" component={Password} />

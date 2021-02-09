@@ -74,6 +74,9 @@ const Shop = () => {
   useEffect(() => {
     const delayed = setTimeout(() => {
       fetchFilteredProducts({ query: text });
+      if (!text) {
+        loadAllProducts();
+      }
     }, 300);
 
     return () => clearTimeout(delayed);

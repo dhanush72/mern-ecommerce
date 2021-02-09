@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "antd/dist/antd.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "react-quill/dist/quill.snow.css";
+import "react-datepicker/dist/react-datepicker.css";
 import reportWebVitals from "./reportWebVitals";
 
 import { createStore } from "redux";

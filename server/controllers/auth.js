@@ -11,7 +11,6 @@ exports.createUpdateUser = async (req, res) => {
 
   if (user) {
     res.json(user);
-    console.log("Updated User:", user);
   } else {
     const newUser = await new User({
       email,
@@ -19,7 +18,6 @@ exports.createUpdateUser = async (req, res) => {
       picture,
     }).save();
     res.json(newUser);
-    console.log("Created User:", newUser);
   }
 };
 

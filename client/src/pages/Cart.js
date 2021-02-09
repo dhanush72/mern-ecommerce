@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Result, Button } from "antd";
 import CheckoutProductCard from "../components/card/CheckoutProductCard";
+import { userCart } from "../functions/user";
 
-const Cart = () => {
+const Cart = ({ history }) => {
   const { user, cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
@@ -14,7 +15,16 @@ const Cart = () => {
     }, 0);
   };
 
-  const handleCheckout = () => {};
+  const handleCheckout = () => {
+    userCart(cart, user.token)
+      .then((res) => {
+        console.log("checkout resp", res);
+        if (res.data.ok) {
+          history.push("/checkout");
+        }
+      })
+      .catch((error) => console.log("checkout error =>", error.message));
+  };
 
   const showCartItems = () => (
     <table className="table table-bordered">
@@ -64,10 +74,6 @@ const Cart = () => {
           <hr />
           {cart.map((product, index) => (
             <div key={index}>
-              {/* <p>
-                {product.title} x {product.quantity} = $
-                {product.price * product.count}
-              </p> */}
               <dl className="dlist-align">
                 <dt>
                   {product.title} x {product.quantity} :
