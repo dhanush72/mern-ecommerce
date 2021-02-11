@@ -127,3 +127,7 @@ img {
   padding-left: 12px;
   padding-right: 7px;
 }
+
+.payment-card > .ant-card-body {
+  padding: 0;
+}
