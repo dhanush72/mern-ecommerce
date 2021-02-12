@@ -93,12 +93,12 @@ const History = () => {
           <div className="col-md-2">
             <UserNav />
           </div>
-          <div className="col py-2">
+          <div className="col  py-2">
             <h4>{orders.length ? "Purchase Orders" : "No Purchase yet"}</h4>
             {orders.map((order, index) => (
-              <div key={index} className="card p-3 ">
+              <div key={index} className="card mb-3 p-3 ">
                 <ShowPaymentInfo order={order} />
-                <h6>Order Info</h6>
+                <h6> Order Info</h6>
                 {showOrderTable(order)}
                 <div className="row">
                   <div className="col">{showPDFDownload(order)}</div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Tag, Tooltip } from "antd";
 import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import Placeholder from "../../assets/images/placeholder.png";
 import ProductListItems from "./ProductListItems";
@@ -10,14 +10,20 @@ import RatingModal from "../modal/RatingModal";
 import { showAverage } from "../../functions/rating";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
+import { addToWishlist } from "../../functions/user";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const { Meta } = Card;
 
 const SingleProduct = ({ product, star, onStarClick }) => {
-  const { _id, title, description, images, slug, category } = product;
+  const { _id, title, description, images, category } = product;
   const [toolTip, setToolTip] = useState("Click to add");
 
+  const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const handleAddToCart = () => {
     let cart = [];
@@ -47,6 +53,15 @@ const SingleProduct = ({ product, star, onStarClick }) => {
       // * show cart items in side drawer
       dispatch({ type: "SET_VISIBLE", payload: true });
     }
+  };
+
+  const handleWishlist = (e) => {
+    e.preventDefault();
+    addToWishlist(product._id, user.token).then((res) => {
+      console.log("added to wishlist", res.data);
+      toast.success("Added to wishlist");
+      history.push("/user/wishlist");
+    });
   };
 
   return (
@@ -80,10 +95,10 @@ const SingleProduct = ({ product, star, onStarClick }) => {
                 cart
               </a>
             </Tooltip>,
-            <Link to={`/product/${slug}`}>
+            <a onClick={handleWishlist}>
               <HeartOutlined className="text-secondary" /> <br /> Add to
               Wishlist
-            </Link>,
+            </a>,
             <RatingModal>
               <div className="text-center">
                 <StarRatings

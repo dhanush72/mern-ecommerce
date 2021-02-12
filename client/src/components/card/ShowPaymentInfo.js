@@ -1,10 +1,9 @@
 import React from "react";
 import { Tag } from "antd";
 
-const ShowPaymentInfo = ({ order }) => {
+const ShowPaymentInfo = ({ order, showStatus }) => {
   return (
     <div>
-      <h6>Payment Info</h6>
       <table className="table table-bordered">
         <thead className="thead-light">
           <tr>
@@ -26,9 +25,11 @@ const ShowPaymentInfo = ({ order }) => {
             <th scope="col">
               <b>Ordered</b>
             </th>
-            <th scope="col">
-              <b>Status</b>
-            </th>
+            {showStatus && (
+              <th scope="col">
+                <b>Status</b>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -46,9 +47,12 @@ const ShowPaymentInfo = ({ order }) => {
             </td>
             <td>{order.payment.payment_method_types[0]}</td>
             <td>{new Date(order.payment.created * 1000).toLocaleString()}</td>
-            <td>
-              <Tag color="processing">{order.orderStatus.toUpperCase()}</Tag>{" "}
-            </td>
+
+            {showStatus && (
+              <td>
+                <Tag color="processing">{order.orderStatus.toUpperCase()}</Tag>{" "}
+              </td>
+            )}
           </tr>
         </tbody>
       </table>

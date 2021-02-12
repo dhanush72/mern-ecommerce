@@ -131,3 +131,10 @@ img {
 .payment-card > .ant-card-body {
   padding: 0;
 }
+
+.wishlist-img {
+  height: 220px;
+  width: 220px;
+  margin-top: 10px;
+  padding: 10px;
+}
