@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import UserNav from "../../components/nav/UserNav";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUserOrders } from "../../functions/user";
 import { CloseCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import { toast } from "react-toastify";
 import { Tag } from "antd";
 import ShowPaymentInfo from "../../components/card/ShowPaymentInfo";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Invoice from "../../components/order/Invoice";
 
 const History = () => {
   const [orders, setOrders] = useState([]);
@@ -75,6 +76,16 @@ const History = () => {
     </table>
   );
 
+  const showPDFDownload = (order) => (
+    <PDFDownloadLink
+      document={<Invoice order={order} />}
+      fileName="invoice.pdf"
+      className="btn ant-btn-primary text-white"
+    >
+      Download PDF
+    </PDFDownloadLink>
+  );
+
   return (
     <>
       <div className="container-fluid">
@@ -90,9 +101,7 @@ const History = () => {
                 <h6>Order Info</h6>
                 {showOrderTable(order)}
                 <div className="row">
-                  <div className="col">
-                    <p>PDF Download</p>
-                  </div>
+                  <div className="col">{showPDFDownload(order)}</div>
                 </div>
               </div>
             ))}
