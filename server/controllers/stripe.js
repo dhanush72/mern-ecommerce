@@ -1,7 +1,5 @@
 const User = require("../models/user");
-const Product = require("../models/product");
 const Cart = require("../models/cart");
-const Coupon = require("../models/coupon");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 exports.createPayment = async (req, res) => {
@@ -11,7 +9,6 @@ exports.createPayment = async (req, res) => {
   const { cartTotal, totalAfterDiscount } = await Cart.findOne({
     orderedBy: user._id,
   }).exec();
-  console.log(`cart total: ${cartTotal}, after dis: ${totalAfterDiscount}`);
 
   let finalAmount = 0;
 

@@ -59,8 +59,16 @@ const ProductCard = ({ product }) => {
           <EyeOutlined className="text-info" /> <br /> View
         </Link>,
         <Tooltip title={toolTip} color="green">
-          <a onClick={handleAddToCart}>
-            <ShoppingCartOutlined className="text-success" /> <br /> Add to cart
+          <a onClick={handleAddToCart} disabled={product.quantity < 1}>
+            <ShoppingCartOutlined
+              className={product.quantity < 1 ? "text-danger" : "text-success"}
+            />{" "}
+            <br />
+            {product.quantity < 1 ? (
+              <p className="text-danger">Out of stock</p>
+            ) : (
+              " Add to cart"
+            )}
           </a>
         </Tooltip>,
       ]}

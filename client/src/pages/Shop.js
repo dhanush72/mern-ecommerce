@@ -41,10 +41,10 @@ const Shop = () => {
     "Blue",
   ]);
   const [color, setColor] = useState("");
-  const [shippings, setShippings] = useState(["Yes", "No"]);
+  const [shippings] = useState(["Yes", "No"]);
   const [shipping, setShipping] = useState("");
-  const [sub, setSub] = useState("");
-  const [star, setStar] = useState("");
+  const [setSub] = useState("");
+  const [setStar] = useState("");
   const [price, setPrice] = useState([0, 0]);
   const [ok, setOk] = useState(false);
 
@@ -203,17 +203,16 @@ const Shop = () => {
   // * loading product by brand
   const showBrands = () =>
     brands.map((b) => (
-      <div key={b._id}>
-        <Radio
-          name={b}
-          className="pb-2 pl-4 pr-4"
-          value={b}
-          checked={b === brand}
-          onChange={handleBrand}
-        >
-          {b}
-        </Radio>
-      </div>
+      <Radio
+        key={b._id}
+        name={b}
+        className="pb-2 pl-4 pr-4"
+        value={b}
+        checked={b === brand}
+        onChange={handleBrand}
+      >
+        {b}
+      </Radio>
     ));
 
   const handleBrand = (e) => {
@@ -231,17 +230,16 @@ const Shop = () => {
 
   const showColors = () =>
     colors.map((c) => (
-      <div key={c._id}>
-        <Radio
-          name={c}
-          className="pb-2 pl-4 pr-4"
-          value={c}
-          checked={c === color}
-          onChange={handleColor}
-        >
-          {c}
-        </Radio>
-      </div>
+      <Radio
+        key={c._id}
+        name={c}
+        className="pb-2 pl-4 pr-4"
+        value={c}
+        checked={c === color}
+        onChange={handleColor}
+      >
+        {c}
+      </Radio>
     ));
 
   const handleColor = (e) => {
@@ -401,7 +399,7 @@ const Shop = () => {
             ) : (
               products.map((product) => (
                 <div className="col-md-4 mb-3" key={product._id}>
-                  <ProductCard product={product} />
+                  <ProductCard key={product._id} product={product} />
                 </div>
               ))
             )}

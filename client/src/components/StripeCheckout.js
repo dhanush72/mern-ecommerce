@@ -6,7 +6,7 @@ import { createPayment } from "../functions/stripe";
 import { Link } from "react-router-dom";
 import { Card } from "antd";
 import { DollarOutlined, CheckOutlined } from "@ant-design/icons";
-import Placeholder from "../assets/images/placeholder.png";
+import { createOrder, emptyUserCart } from "../functions/user";
 
 const cartStyle = {
   style: {
@@ -71,8 +71,20 @@ const StripeCheckout = () => {
       setError(`Payment failed ${payload.error.message}`);
     } else {
       //* result
-      //* create order and save in db
-      //* empty cart
+      createOrder(payload, user.token).then((res) => {
+        //* empty lcoal storage
+        if (res.data.ok) {
+          if (typeof window !== undefined) {
+            localStorage.removeItem("cart");
+          }
+        }
+        //* empty redux
+        dispatch({ type: "ADD_TO_CART", payload: [] });
+        //* reset coupon
+        dispatch({ type: "COUPON_APPLIED", payload: false });
+      });
+      //* empty cart from db
+      emptyUserCart(user.token);
       setProcessing(false);
       setError(null);
       setSucceeded(true);
@@ -90,7 +102,7 @@ const StripeCheckout = () => {
         <div>
           {coupon && totalAfterDiscount !== undefined ? (
             <p className="alert alert-success">
-              Discount: ₹{totalAfterDiscount}
+              Total after discount: ₹{totalAfterDiscount}
             </p>
           ) : (
             <p className="alert alert-danger">No coupon applied</p>
