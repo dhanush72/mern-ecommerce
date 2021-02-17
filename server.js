@@ -29,6 +29,14 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json({ limit: "2mb" }));
 
+if (process.env.NODE.ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
+
 // * looping routes with middlewares
 fs.readdirSync("./routes").map((route) =>
   app.use("/api", require("./routes/" + route))
