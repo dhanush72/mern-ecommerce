@@ -30,7 +30,7 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json({ limit: "2mb" }));
 
-const buildPath = path.join(__dirname, "..", "build");
+const buildPath = path.join(__dirname, "/client", "build");
 app.use(express.static(buildPath));
 
 // * looping routes with middlewares
