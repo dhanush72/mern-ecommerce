@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -29,13 +30,8 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json({ limit: "2mb" }));
 
-if (process.env.NODE.ENV === "production") {
-  app.use(express.static("client/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
-  });
-}
+const buildPath = path.join(__dirname, "..", "build");
+app.use(express.static(buildPath));
 
 // * looping routes with middlewares
 fs.readdirSync("./routes").map((route) =>
